@@ -1,0 +1,192 @@
+@use "../util/" as u;
+
+@layer layout {
+  :root {
+    --spacing-100: calc(8 / 16 * 1rem);
+    --spacing-150: calc(12 / 16 * 1rem);
+    --spacing-200: 1rem;
+    --spacing-250: calc(20 / 16 * 1rem);
+    --spacing-300: calc(24 / 16 * 1rem);
+    --spacing-400: calc(32 / 16 * 1rem);
+    --spacing-500: calc(40 / 16 * 1rem);
+
+    --bs: 0px 32px 56px 0px hsla(281, 100%, 23%, 0.1);
+
+    --br-8: 0.5rem;
+    --br-12: 0.75rem;
+    --br-16: 1rem;
+    --wrapper-size: calc(520 / 16 * 1rem) + calc(var(--spacing-500) * 2);
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    color: var(--color-text);
+    background-image: url("./../../assets/images/background-pattern-mobile.svg");
+    background-color: var(--color-bg);
+    background-repeat: repeat-x;
+    background-size: contain;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+  }
+
+  .wrapper {
+    inline-size: min(100% - var(--spacing-250), var(--wrapper-size));
+    margin-inline: auto;
+  }
+
+  .warning {
+    position: fixed;
+    top: 0;
+    inline-size: 100%;
+    background-color: var(--c-purple-950);
+    color: var(--c-white);
+    padding-inline: var(--spacing-100);
+    padding-block: var(--spacing-100);
+    text-align: center;
+
+    /* Firefox and Safari somehow support 'allow-discrete' but the animation is not smooth, 
+    that's why I add another more recent css rule to show the warning */
+    @supports (scroll-marker-group: after) {
+      display: none;
+    }
+  }
+
+  .site-content {
+    padding: var(--spacing-300);
+    margin-block: var(--spacing-500);
+    box-shadow: var(--bs);
+    background-color: var(--c-white);
+    border-radius: var(--br-16);
+
+    h1 {
+      color: var(--c-purple-950);
+      position: relative;
+      padding-inline-start: calc(0.5lh + var(--spacing-300));
+
+      &::before {
+        content: "";
+        background-image: url("./../../assets/images/icon-star.svg");
+        background-size: cover;
+        block-size: 0.6lh;
+        inline-size: 0.6lh;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  .faq-container {
+    margin-block-start: var(--spacing-300);
+    display: grid;
+    row-gap: var(--spacing-250);
+  }
+
+  .details {
+    position: relative;
+
+    &:not(:last-of-type) {
+      padding-block-end: var(--spacing-300);
+      border-bottom: 1px solid var(--c-purple-100);
+    }
+
+    &::details-content {
+      display: block;
+      block-size: 0;
+      overflow: hidden;
+      transition-property: block-size, content-visibility;
+      transition-duration: 0.5s;
+      transition-behavior: allow-discrete;
+    }
+
+    &[open] {
+      &::details-content {
+        /* Fallback for browsers that don't support calc-size() function */
+        block-size: auto;
+        /* calc-size() function allows transition to height: auto; */
+        block-size: calc-size(auto, size);
+      }
+
+      .details__summary::before {
+        content: "";
+        background-image: url("./../../assets/images/icon-minus.svg");
+      }
+    }
+
+    &__summary {
+      padding-inline-end: 1lh;
+      position: relative;
+      cursor: pointer;
+      color: var(--c-purple-950);
+      transition: color 0.2s ease-in;
+
+      &:hover {
+        color: var(--c-purple-300);
+      }
+
+      &::marker {
+        content: "+";
+        content: none;
+      }
+
+      &::before {
+        content: "";
+        //content: "+";
+        position: absolute;
+        /* tried with pure css instead of bg image but problem with the line height of the + char */
+        // background-color: var(--c-purple-600);
+        // color: var(--c-white);
+        // border-radius: 50%;
+        // display: flex;
+        // place-content: center;
+        // font-weight: 100;
+        // font-size: var(--fs-18);
+        // transition: rotate 0.2s;
+        background-image: url("./../../assets/images/icon-plus.svg");
+        background-size: cover;
+        inline-size: 1lh;
+        block-size: 1lh;
+        inset-inline-end: 0;
+      }
+    }
+
+    &__content {
+      padding-block-start: var(--spacing-250);
+
+      &::selection {
+        color: var(--c-white);
+        background-color: var(--c-purple-950);
+      }
+    }
+  }
+
+  .attribution {
+    text-align: center;
+    margin-block-end: var(--spacing-500);
+  }
+
+  @include u.breakpoint("medium") {
+    body {
+      background-image: url("./../../assets/images/background-pattern-desktop.svg");
+    }
+
+    .site-content {
+      padding: var(--spacing-500);
+    }
+
+    .faq-container {
+      margin-block-start: var(--spacing-400);
+      row-gap: var(--spacing-300);
+    }
+
+    .details__content {
+      padding-block-start: var(--spacing-300);
+    }
+  }
+}
