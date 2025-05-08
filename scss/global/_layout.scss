@@ -2,6 +2,7 @@
 
 @layer layout {
   :root {
+    interpolate-size: allow-keywords;
     --spacing-100: calc(8 / 16 * 1rem);
     --spacing-150: calc(12 / 16 * 1rem);
     --spacing-200: 1rem;
@@ -9,6 +10,7 @@
     --spacing-300: calc(24 / 16 * 1rem);
     --spacing-400: calc(32 / 16 * 1rem);
     --spacing-500: calc(40 / 16 * 1rem);
+    --spacing-2000: calc(200 / 16 * 1rem);
 
     --bs: 0px 32px 56px 0px hsla(281, 100%, 23%, 0.1);
 
@@ -28,9 +30,9 @@
     background-color: var(--color-bg);
     background-repeat: repeat-x;
     background-size: contain;
-    margin: 0;
-    display: grid;
-    place-items: center;
+    margin: var(--spacing-2000) 0 0;
+    // display: grid;
+    // place-items: center;
     min-height: 100vh;
   }
 
@@ -49,6 +51,11 @@
     padding-block: var(--spacing-100);
     text-align: center;
 
+    p {
+      max-width: 90ch;
+      margin-inline: auto;
+    }
+
     /* Firefox and Safari somehow support 'allow-discrete' but the animation is not smooth, 
     that's why I add another more recent css rule to show the warning */
     @supports (scroll-marker-group: after) {
@@ -61,7 +68,7 @@
     margin-block: var(--spacing-500);
     box-shadow: var(--bs);
     background-color: var(--c-white);
-    border-radius: var(--br-16);
+    border-radius: var(--br-8);
 
     h1 {
       color: var(--c-purple-950);
@@ -99,7 +106,7 @@
     &::details-content {
       display: block;
       block-size: 0;
-      overflow: hidden;
+      overflow: clip;
       transition-property: block-size, content-visibility;
       transition-duration: 0.5s;
       transition-behavior: allow-discrete;
@@ -139,7 +146,7 @@
         content: "";
         //content: "+";
         position: absolute;
-        /* tried with pure css instead of bg image but problem with the line height of the + char */
+        /* I tried with pure css instead of bg image but had a problem with the line height of the + char */
         // background-color: var(--c-purple-600);
         // color: var(--c-white);
         // border-radius: 50%;
@@ -178,6 +185,7 @@
 
     .site-content {
       padding: var(--spacing-500);
+      border-radius: var(--br-16);
     }
 
     .faq-container {
